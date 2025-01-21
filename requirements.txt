@@ -1,0 +1,13 @@
+librosa
+soundfile
+fastapi
+ffmpeg-python
+whisper
+whisper-timestamped
+faster-whisper
+mlx-whisper
+torch
+mosestokenizer
+wtpsplit
+uvicorn
+diart
