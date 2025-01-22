@@ -1,13 +1,16 @@
-librosa
+librosa>=0.10.2.post1,<0.11
+fastapi>=0.115.6,<0.116
+ffmpeg-python>=0.2.0,<0.3
+mosestokenizer
+uvicorn  # for server
+sentencepiece>=0.2.0,<0.3
 soundfile
-fastapi
-ffmpeg-python
+mlx-whisper>=0.4.1,<0.5
+torch>=2.5.1,<3
+wtpsplit>=2.1.2,<3
+tokenize-uk>=0.2.0,<0.3
+faster-whisper>=1.1.0,<2
+torchaudio>=2.5.1,<3
 whisper
 whisper-timestamped
-faster-whisper
-mlx-whisper
-torch
-mosestokenizer
-wtpsplit
-uvicorn
 diart
