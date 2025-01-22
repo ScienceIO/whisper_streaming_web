@@ -19,7 +19,7 @@ ENDPOINT_NAME="${ENDPOINT_NAME:-ambient-audio-endpoint}"
 ACR_NAME="${ACR_NAME:-dev85ec8a04}"
 IMAGE_NAME="${IMAGE_NAME:-ambient_audio}"
 IMAGE_TAG="${IMAGE_TAG:-0.1}"
-INSTANCE_TYPE="${INSTANCE_TYPE:-Standard_E4s_v3}"
+INSTANCE_TYPE="${INSTANCE_TYPE:-Standard_NC4as_T4_v3}"
 
 # Install Python dependencies
 pip install azure-ai-ml azure-identity pytest httpx
