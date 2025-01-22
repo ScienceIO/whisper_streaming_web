@@ -68,7 +68,7 @@ with open("src/web/live_transcription.html", "r", encoding="utf-8") as f:
 
 
 @app.get("/")
-async def get():
+async def getroot():
     return HTMLResponse(html)
 
 
