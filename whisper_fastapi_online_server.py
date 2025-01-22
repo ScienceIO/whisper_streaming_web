@@ -54,6 +54,13 @@ asr, tokenizer = backend_factory(args)
 if args.diarization:
     from src.diarization.diarization_online import DiartDiarization
 
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
+@app.get("/ready")
+def ready():
+    return {"status": "ok"}
 
 # Load demo HTML for the root endpoint
 with open("src/web/live_transcription.html", "r", encoding="utf-8") as f:
@@ -64,13 +71,6 @@ with open("src/web/live_transcription.html", "r", encoding="utf-8") as f:
 async def get():
     return HTMLResponse(html)
 
-@app.get("/health")
-def health():
-    return {"status": "ok"}
-
-@app.get("/ready")
-def ready():
-    return {"status": "ok"}
 
 SAMPLE_RATE = 16000
 CHANNELS = 1
