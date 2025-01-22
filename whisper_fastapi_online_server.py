@@ -64,6 +64,13 @@ with open("src/web/live_transcription.html", "r", encoding="utf-8") as f:
 async def get():
     return HTMLResponse(html)
 
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
+@app.get("/ready")
+def ready():
+    return {"status": "ok"}
 
 SAMPLE_RATE = 16000
 CHANNELS = 1
