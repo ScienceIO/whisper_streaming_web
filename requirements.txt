@@ -6,7 +6,7 @@ uvicorn  # for server
 sentencepiece>=0.2.0,<0.3
 soundfile
 mlx-whisper>=0.4.1,<0.5
-torch>=2.5.1,<3
+torch>=2.4.1,<3
 wtpsplit>=2.1.2,<3
 tokenize-uk>=0.2.0,<0.3
 faster-whisper>=1.1.0,<2
