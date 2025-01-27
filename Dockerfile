@@ -1,38 +1,21 @@
-FROM python:3.10
+FROM python:3.9-slim
 
-RUN apt-get update \
-    && apt-get install -y build-essential \
-    && apt-get install -y wget \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+WORKDIR /app
 
-ENV CONDA_DIR /opt/conda
-RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
-    /bin/bash ~/miniconda.sh -b -p /opt/conda
+# Install system dependencies
+RUN apt-get update && apt-get install -y ffmpeg
 
-ENV PATH $CONDA_DIR/bin:$PATH
-
-ARG hf_token
-
-#RUN addgroup --system appuser && adduser --system --group appuser
-
-WORKDIR /all
-COPY . .
-RUN conda env create -f environment.yml
-RUN echo "source activate ambient-audio" > ~/.bashrc
-ENV PATH /opt/conda/envs/ambient-audio/bin:$PATH
-RUN /bin/bash -c "source activate ambient-audio && conda list"
-
+# Copy and install Python dependencies
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-ENV HF_TOKEN $hf_token
+# Copy application code
+COPY . .
 
-RUN touch /all/output1.log 
-#RUN chown appuser:appuser /all/output1.log
-RUN huggingface-cli login --token $HF_TOKEN
-
+# Expose the port and run the server
 EXPOSE 8000
+CMD ["uvicorn", "whisper_fastapi_online_server:app", "--host", "0.0.0.0", "--port", "8000"]
 
-#USER appuser
 
-CMD ["uvicorn", "app.main:app", "--reload", "--host", "0.0.0.0", "--port", "8000"]
+
+
