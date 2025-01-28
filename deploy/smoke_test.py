@@ -18,7 +18,7 @@ from azure.identity import DefaultAzureCredential
 SUBSCRIPTION_ID = "f21c56c2-6802-4722-a757-2785b91b19a9"
 RESOURCE_GROUP = "ml_workspace_east_us_2"
 WORKSPACE_NAME = "ml_workspace_east_us_2"
-ENDPOINT_NAME = "ambient-audio-endpoint"
+ENDPOINT_NAME = "ambient-audio-realtime-dev"
 
 
 @pytest.fixture(scope="module")
@@ -33,7 +33,7 @@ def ml_client():
 
 @pytest.fixture(scope="module")
 def endpoint_details(ml_client):
-    endpoint_name = "ambient-audio-endpoint"
+    endpoint_name = "ambient-audio-realtime-dev"
     deployment_name = ml_client.online_deployments.list(endpoint_name).next().name
     endpoint = ml_client.online_endpoints.get(name=endpoint_name)
     deployment = ml_client.online_deployments.get(

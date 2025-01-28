@@ -10,10 +10,10 @@
 #   @Description: 
 # ------------------------------------------------------------------------------
 
-docker buildx build --platform linux/amd64 --load --build-arg hf_token=$HF_TOKEN .. -t ambient_audio --progress=plain
+docker buildx build --platform linux/amd64 --load .. -t ambient_audio_realtime --progress=plain
 
 az acr login --name dev85ec8a04
 
-docker tag ambient_audio dev85ec8a04.azurecr.io/ambient_audio:0.1
+docker tag ambient_audio_realtime dev85ec8a04.azurecr.io/ambient_audio_realtime:0.2
 
-docker push dev85ec8a04.azurecr.io/ambient_audio:0.1
+docker push dev85ec8a04.azurecr.io/ambient_audio_realtime:0.2

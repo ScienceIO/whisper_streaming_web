@@ -70,6 +70,8 @@ def deploy(args):
             },
         },
     )
+
+    ml_client.environments.create_or_update(environment)
     
     # Configure the deployment
     deployment = ManagedOnlineDeployment(
