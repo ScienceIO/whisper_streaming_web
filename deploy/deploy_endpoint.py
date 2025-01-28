@@ -58,7 +58,7 @@ def deploy(args):
         inference_config={
             "scoring_route": {
                 "port": 8000,
-                "path": "/",
+                "path": "/asr",
             },
             "liveness_route": {
                 "port": 8000,
