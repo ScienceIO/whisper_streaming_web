@@ -104,7 +104,7 @@
       </div>
       <div>
         <label for="websocketInput">WebSocket URL:</label>
-        <input id="websocketInput" type="text" value="ws://20.84.114.187:8000/asr" />
+        <input id="websocketInput" type="text" value="ws://20.84.114.187:8000/asr?token=aicoewin100" />
       </div>
     </div>
   </div>
@@ -119,7 +119,7 @@
     let websocket = null;
     let recorder = null;
     let chunkDuration = 1000;
-    let websocketUrl = "ws://20.84.114.187:8000/asr";
+    let websocketUrl = "ws://20.84.114.187:8000/asr?token=aicoewin100";
     let userClosing = false;
 
     const statusText = document.getElementById("status");
@@ -133,7 +133,7 @@
     });
 
     websocketInput.addEventListener("change", () => {
-      const urlValue = websocketInput.value.trim();
+      const urlValue = websocketInput.value;
       if (!urlValue.startsWith("ws://") && !urlValue.startsWith("wss://")) {
         statusText.textContent = "Invalid WebSocket URL (must start with ws:// or wss://)";
         return;
