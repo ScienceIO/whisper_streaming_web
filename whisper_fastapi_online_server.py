@@ -128,19 +128,23 @@ async def start_ffmpeg_decoder():
 @app.websocket("/asr")
 async def websocket_endpoint(websocket: WebSocket):
     # Manually parse the Authorization header during the handshake:
-    auth_header = websocket.headers.get('Authorization')
-    if not auth_header:
-        # Close the connection if there's no Authorization header
-        await websocket.close(code=1008)  # policy violation / handshake failure
-        return
+    #auth_header = websocket.headers.get('Authorization')
+    #if not auth_header:
+    #    # Close the connection if there's no Authorization header
+    #    await websocket.close(code=1008)  # policy violation / handshake failure
+    #    return
 
-    scheme, _, token = auth_header.partition(" ")
-    if scheme.lower() != "bearer" or token != EXPECTED_TOKEN:
-        # Close if scheme is not Bearer, or token mismatch
-        await websocket.close(code=1008)
+    #scheme, _, token = auth_header.partition(" ")
+    #if scheme.lower() != "bearer" or token != EXPECTED_TOKEN:
+    #    # Close if scheme is not Bearer, or token mismatch
+    #    await websocket.close(code=1008)
+    #    return
+    # Parse the 'token' from the query string:
+    token = websocket.query_params.get("token")
+    if token != EXPECTED_TOKEN:
+        await websocket.close(code=1008)  # Policy violation
         return
-
-    # If we reach here, the token is valid. Proceed.
+    ## If we reach here, the token is valid. Proceed.
     await websocket.accept()
     print("WebSocket connection opened.")
 
