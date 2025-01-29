@@ -7,9 +7,35 @@ from time import time
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.responses import HTMLResponse
+from fastapi import Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
-
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from src.whisper_streaming.whisper_online import backend_factory, online_factory, add_shared_args
+
+# -------------- BEGIN Bearer token setup --------------
+security = HTTPBearer()
+
+# Replace this with your real secret token or token verification logic.
+EXPECTED_TOKEN = "pengisawesome"
+
+def verify_bearer_token(
+    credentials: HTTPAuthorizationCredentials = Depends(security),
+):
+    """
+    Simple check to ensure the token passed matches EXPECTED_TOKEN.
+    In production, you'd have a more sophisticated check or a JWT validation.
+    """
+    token = credentials.credentials
+    if token != EXPECTED_TOKEN:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid or missing token",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    return token
+# -------------- END Bearer token setup --------------
+
+
 
 app = FastAPI()
 app.add_middleware(
@@ -55,11 +81,11 @@ if args.diarization:
     from src.diarization.diarization_online import DiartDiarization
 
 @app.get("/health")
-def health():
+def health(token:str = Depends(verify_bearer_token):
     return {"status": "ok"}
 
 @app.get("/ready")
-def ready():
+def ready(token:str = Depends(verify_bearer_token):
     return {"status": "ok"}
 
 # Load demo HTML for the root endpoint
@@ -68,7 +94,7 @@ with open("src/web/live_transcription.html", "r", encoding="utf-8") as f:
 
 
 @app.get("/")
-async def get():
+async def get(token:str = Depends(verify_bearer_token):
     return HTMLResponse(html)
 
 
@@ -101,6 +127,20 @@ async def start_ffmpeg_decoder():
 
 @app.websocket("/asr")
 async def websocket_endpoint(websocket: WebSocket):
+    # Manually parse the Authorization header during the handshake:
+    auth_header = websocket.headers.get('Authorization')
+    if not auth_header:
+        # Close the connection if there's no Authorization header
+        await websocket.close(code=1008)  # policy violation / handshake failure
+        return
+
+    scheme, _, token = auth_header.partition(" ")
+    if scheme.lower() != "bearer" or token != EXPECTED_TOKEN:
+        # Close if scheme is not Bearer, or token mismatch
+        await websocket.close(code=1008)
+        return
+
+    # If we reach here, the token is valid. Proceed.
     await websocket.accept()
     print("WebSocket connection opened.")
 
