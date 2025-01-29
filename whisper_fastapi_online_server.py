@@ -81,11 +81,11 @@ if args.diarization:
     from src.diarization.diarization_online import DiartDiarization
 
 @app.get("/health")
-def health(token:str = Depends(verify_bearer_token):
+def health(token:str = Depends(verify_bearer_token)):
     return {"status": "ok"}
 
 @app.get("/ready")
-def ready(token:str = Depends(verify_bearer_token):
+def ready(token:str = Depends(verify_bearer_token)):
     return {"status": "ok"}
 
 # Load demo HTML for the root endpoint
@@ -94,7 +94,7 @@ with open("src/web/live_transcription.html", "r", encoding="utf-8") as f:
 
 
 @app.get("/")
-async def get(token:str = Depends(verify_bearer_token):
+async def get(token:str = Depends(verify_bearer_token)):
     return HTMLResponse(html)
 
 
